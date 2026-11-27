@@ -9,6 +9,7 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
 [![Canvas API](https://img.shields.io/badge/Canvas_API-00F2FF?style=for-the-badge&logo=html5&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/API/Canvas_API)
 [![License: MIT](https://img.shields.io/badge/License-MIT-25FF6E?style=for-the-badge)](LICENSE)
+[![Demo](https://img.shields.io/badge/Demo-Online-25FF6E?style=for-the-badge&logo=githubpages&logoColor=white)](https://ohcarlos.github.io/feira-tech-ugb/)
 
 </div>
 
@@ -26,6 +27,12 @@ Este projeto nasceu para um estande da **Feira Tech UGB**. A proposta é mostrar
 No final, o visitante joga um fliperama com a nave que criou.
 
 O projeto é **100% offline**, sem dependências, bibliotecas ou servidor. Basta abrir o `index.html`.
+
+---
+
+## 🌐 Demo
+
+Jogue agora no navegador: **https://ohcarlos.github.io/feira-tech-ugb/**
 
 ---
 
@@ -113,12 +120,11 @@ npx serve .
 ```
 Depois acesse `http://localhost:8080`.
 
-### Publicar no GitHub Pages
-1. Suba o projeto para um repositório no GitHub.
-2. Vá em **Settings → Pages**.
-3. Em **Source**, escolha **Deploy from a branch**.
-4. Selecione a branch `main` e a pasta `/ (root)`.
-5. Salve e aguarde alguns instantes.
+### GitHub Pages
+
+O projeto já está publicado em **https://ohcarlos.github.io/feira-tech-ugb/**.
+
+Para publicar um fork, ative o GitHub Pages em **Settings → Pages**, selecione a branch `main` e a pasta `/ (root)`.
 
 ---
 
