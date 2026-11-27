@@ -159,11 +159,15 @@ Cada módulo JavaScript é uma **IIFE** que expõe apenas sua API pública em `w
 
 ---
 
-## 👤 Autor
+Projeto desenvolvido para a primeira **Feira Tech UGB** apresentando a disciplina de **Computação Gráfica**.
 
-**Carlos Eduardo**
+Membros da Equipe:
 
-Projeto desenvolvido para a **Feira Tech UGB**.
+Carlos Eduardo de Ataide Pedro
+Gleidson da Silva Ribeiro
+Laura Ferreira de Souza
+Vitor Silva Lourenço
+Lucas Leite Garcia Rebelo
 
 ---
 
