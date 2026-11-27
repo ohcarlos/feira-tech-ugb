@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feira Tech UGB — Crie Sua Nave</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="crt" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="logo">FEIRA TECH <span>UGB</span></div>
+    <div class="tagline">COR · COORDENADAS · ANIMAÇÃO · COLISÃO</div>
+  </header>
+
+  <main class="stage">
+
+    <!-- ================= MENU ================= -->
+    <section id="screen-menu" class="screen active">
+      <div class="panel menu-panel">
+        <h1 class="neon-title">CRIE SUA NAVE</h1>
+        <p class="lead">
+          Monte sua nave pixel por pixel, veja o computador animá-la frame a frame
+          e jogue no fliperama com a nave que você criou.
+        </p>
+        <div class="menu-actions">
+          <button id="btn-create" class="btn btn-primary btn-xl">▶ CRIAR MINHA NAVE</button>
+          <button id="btn-hall" class="btn btn-secondary btn-xl">🏆 MELHORES SCORES</button>
+        </div>
+        <div class="concept-chips">
+          <span>RGB</span><span>16×16</span><span>FPS</span><span>COLISÃO</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONSTRUTOR ================= -->
+    <section id="screen-builder" class="screen">
+      <div class="builder-grid">
+        <div class="panel controls-panel">
+          <h2 class="neon-title small">MONTE SUA NAVE</h2>
+          <p class="muted">Cada quadrado é um pixel. Escolha uma cor RGB e clique para pintar.</p>
+
+          <div class="rgb-block">
+            <div class="slider-line">
+              <span class="rgb-tag r">R</span>
+              <input id="rgb-r" type="range" min="0" max="255" value="0">
+              <span id="rgb-r-val" class="rgb-val">0</span>
+            </div>
+            <div class="slider-line">
+              <span class="rgb-tag g">G</span>
+              <input id="rgb-g" type="range" min="0" max="255" value="255">
+              <span id="rgb-g-val" class="rgb-val">255</span>
+            </div>
+            <div class="slider-line">
+              <span class="rgb-tag b">B</span>
+              <input id="rgb-b" type="range" min="0" max="255" value="0">
+              <span id="rgb-b-val" class="rgb-val">0</span>
+            </div>
+            <div class="swatch-row">
+              <div id="color-swatch" class="color-swatch"></div>
+              <div class="quick-colors">
+                <button class="swatch-btn" data-r="0" data-g="242" data-b="255" style="background:#00f2ff" title="Ciano"></button>
+                <button class="swatch-btn" data-r="255" data-g="0" data-b="255" style="background:#ff00ff" title="Magenta"></button>
+                <button class="swatch-btn" data-r="252" data-g="238" data-b="10" style="background:#fcee0a" title="Amarelo"></button>
+                <button class="swatch-btn" data-r="10" data-g="255" data-b="10" style="background:#0aff0a" title="Verde"></button>
+                <button class="swatch-btn" data-r="255" data-g="26" data-b="26" style="background:#ff1a1a" title="Vermelho"></button>
+                <button class="swatch-btn" data-r="255" data-g="255" data-b="255" style="background:#ffffff" title="Branco"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-row">
+            <button id="btn-eraser" class="btn btn-ghost">BORRACHA</button>
+            <button id="btn-clear" class="btn btn-ghost">LIMPAR</button>
+          </div>
+
+          <div class="builder-actions">
+            <button id="btn-builder-lab" class="btn btn-secondary">VER ANIMAÇÃO</button>
+            <button id="btn-builder-play" class="btn btn-primary">JOGAR ▶</button>
+          </div>
+        </div>
+
+        <div class="panel canvas-panel">
+          <canvas id="canvas-builder" width="256" height="256"></canvas>
+          <p class="caption">Grade 16×16 — 256 pixels</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LABORATÓRIO ================= -->
+    <section id="screen-lab" class="screen">
+      <div class="lab-grid">
+        <div class="panel controls-panel">
+          <h2 class="neon-title small">ANIMAÇÃO</h2>
+          <p class="muted">
+            O computador redesenha a imagem várias vezes por segundo. Cada desenho é um
+            frame. Muitos frames juntos viram movimento.
+          </p>
+
+          <div class="fps-block">
+            <label for="slider-fps">FRAMES POR SEGUNDO</label>
+            <input id="slider-fps" type="range" min="1" max="60" value="30">
+            <div class="fps-readout"><span id="fps-label">30</span> FPS</div>
+            <div class="fps-live">Frames desenhados: <span id="fps-live">0</span></div>
+          </div>
+
+          <div class="lab-actions">
+            <button id="btn-lab-back" class="btn btn-ghost">◀ VOLTAR</button>
+            <button id="btn-lab-play" class="btn btn-primary">JOGAR ▶</button>
+          </div>
+        </div>
+
+        <div class="panel canvas-panel">
+          <canvas id="canvas-lab" width="400" height="300"></canvas>
+          <p class="caption">Frame a frame</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= JOGO ================= -->
+    <section id="screen-game" class="screen">
+      <div class="game-wrap">
+        <div class="hud">
+          <div class="hud-box">SCORE <span id="hud-score">0</span></div>
+          <div class="hud-box">VIDAS <span id="hud-lives">3</span></div>
+        </div>
+        <canvas id="canvas-game" width="400" height="600"></canvas>
+        <div class="game-help">
+          <kbd>←</kbd><kbd>→</kbd> ou <kbd>A</kbd><kbd>D</kbd> mover &nbsp;•&nbsp;
+          <kbd>ESPAÇO</kbd> atirar
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= GAME OVER ================= -->
+    <section id="screen-gameover" class="screen">
+      <div class="panel gameover-panel">
+        <h1 class="neon-title danger">GAME OVER</h1>
+        <p class="final-score">PONTUAÇÃO: <span id="final-score">0</span></p>
+
+        <div class="save-row">
+          <input id="player-name" type="text" maxlength="10" value="JOGADOR" placeholder="Seu apelido">
+          <button id="btn-save-score" class="btn btn-primary">SALVAR</button>
+        </div>
+
+        <div class="ranking-block">
+          <h3>🏆 TOP 10</h3>
+          <ol id="scoreboard-list" class="ranking-list"></ol>
+        </div>
+
+        <div class="gameover-actions">
+          <button id="btn-retry" class="btn btn-secondary">JOGAR NOVAMENTE</button>
+          <button id="btn-gameover-menu" class="btn btn-ghost">MENU</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HALL DA FAMA ================= -->
+    <section id="screen-hall" class="screen">
+      <div class="panel hall-panel">
+        <h1 class="neon-title">🏆 HALL DA FAMA</h1>
+        <ol id="hall-list" class="ranking-list"></ol>
+        <button id="btn-hall-back" class="btn btn-secondary">◀ VOLTAR AO MENU</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="scoreboard.js"></script>
+  <script src="canvas-painter.js"></script>
+  <script src="animation-lab.js"></script>
+  <script src="game.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
