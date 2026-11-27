@@ -73,9 +73,15 @@
           </div>
 
           <div class="tool-row">
-            <button id="btn-eraser" class="btn btn-ghost">BORRACHA</button>
+            <button id="btn-pencil" class="btn btn-ghost active" title="Pincel">PINCEL</button>
+            <button id="btn-eraser" class="btn btn-ghost" title="Borracha">BORRACHA</button>
+            <button id="btn-bucket" class="btn btn-ghost" title="Preencher área contígua">BALDE</button>
+          </div>
+          <div class="tool-row">
+            <button id="btn-symmetry" class="btn btn-ghost" title="Espelhar a pintura no eixo vertical">SIMETRIA: OFF</button>
             <button id="btn-clear" class="btn btn-ghost">LIMPAR</button>
           </div>
+          <p class="hint">Botão direito apaga o pixel • Simetria espelha à esquerda/direita</p>
 
           <div class="builder-actions">
             <button id="btn-builder-lab" class="btn btn-secondary">VER ANIMAÇÃO</button>
@@ -119,17 +125,46 @@
       </div>
     </section>
 
+    <!-- ================= BRIEFING ================= -->
+    <section id="screen-briefing" class="screen">
+      <div class="panel briefing-panel">
+        <h1 class="neon-title">PREPARE-SE</h1>
+        <p class="briefing-goal">Faça o máximo de pontos em <strong>60 segundos</strong>!</p>
+
+        <div class="briefing-controls">
+          <div class="briefing-row">
+            <span class="briefing-keys"><kbd>←</kbd><kbd>→</kbd> ou <kbd>A</kbd><kbd>D</kbd></span>
+            <span>Mover a nave</span>
+          </div>
+          <div class="briefing-row">
+            <span class="briefing-keys"><kbd>ESPAÇO</kbd></span>
+            <span>Atirar (um tiro por pressionamento)</span>
+          </div>
+        </div>
+
+        <p class="briefing-tip">
+          Segurar o ESPAÇO não dispara continuamente. Pressione de novo para cada tiro!
+        </p>
+
+        <div class="briefing-actions">
+          <button id="btn-briefing-start" class="btn btn-primary">COMEÇAR ▶</button>
+          <button id="btn-briefing-back" class="btn btn-ghost">◀ VOLTAR</button>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= JOGO ================= -->
     <section id="screen-game" class="screen">
       <div class="game-wrap">
         <div class="hud">
           <div class="hud-box">SCORE <span id="hud-score">0</span></div>
+          <div class="hud-box">TEMPO <span id="hud-time">60</span></div>
           <div class="hud-box">VIDAS <span id="hud-lives">3</span></div>
         </div>
         <canvas id="canvas-game" width="400" height="600"></canvas>
         <div class="game-help">
           <kbd>←</kbd><kbd>→</kbd> ou <kbd>A</kbd><kbd>D</kbd> mover &nbsp;•&nbsp;
-          <kbd>ESPAÇO</kbd> atirar
+          <kbd>ESPAÇO</kbd> atirar (1 por pressionamento)
         </div>
       </div>
     </section>
@@ -137,7 +172,7 @@
     <!-- ================= GAME OVER ================= -->
     <section id="screen-gameover" class="screen">
       <div class="panel gameover-panel">
-        <h1 class="neon-title danger">GAME OVER</h1>
+        <h1 id="gameover-title" class="neon-title danger">GAME OVER</h1>
         <p class="final-score">PONTUAÇÃO: <span id="final-score">0</span></p>
 
         <div class="save-row">

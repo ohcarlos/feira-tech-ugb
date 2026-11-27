@@ -13,10 +13,14 @@
   var ctx = canvas.getContext('2d');
   var hudScore = document.getElementById('hud-score');
   var hudLives = document.getElementById('hud-lives');
+  var hudTime = document.getElementById('hud-time');
 
   var PX = 4;               // nave 16×16 → 64×64
   var SHIP_W = 16 * PX;
   var SHIP_H = 16 * PX;
+
+  var GAME_TIME = 60;       // duração da partida em segundos
+  var COUNTDOWN = 3;        // 3-2-1 antes de liberar o timer
 
   var running = false;
   var rafId = null;
@@ -25,6 +29,10 @@
   var ship = null;          // dados 16×16 vindos do construtor
   var score = 0;
   var lives = 3;
+  var timeLeft = GAME_TIME;
+  var countdown = COUNTDOWN;
+  var phase = 'countdown';  // 'countdown' | 'playing'
+  var fireQueued = false;   // um tiro por pressionamento
 
   var player = {
     x: W / 2 - SHIP_W / 2,
@@ -43,27 +51,33 @@
   var spawnInterval = 0.85;
   var shake = 0;
 
-  var keys = { left: false, right: false, fire: false };
+  var keys = { left: false, right: false };
 
   /* ---------------- Input ---------------- */
 
   function onKeyDown(e) {
     if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = true;
     if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = true;
-    if (e.code === 'Space') {
-      keys.fire = true;
-      if (running) e.preventDefault();
+    if (e.code === 'Space' && running) {
+      e.preventDefault();
+      // e.repeat ignora o auto-repeat do teclado: segurar não dispara sozinho
+      if (!e.repeat && phase === 'playing') fireQueued = true;
     }
   }
 
   function onKeyUp(e) {
     if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = false;
     if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = false;
-    if (e.code === 'Space') keys.fire = false;
   }
 
   window.addEventListener('keydown', onKeyDown);
   window.addEventListener('keyup', onKeyUp);
+
+  // evita que a nave continue andando se a janela perder o foco
+  window.addEventListener('blur', function () {
+    keys.left = false;
+    keys.right = false;
+  });
 
   /* ---------------- Helpers ---------------- */
 
@@ -83,6 +97,8 @@
   function updateHud() {
     hudScore.textContent = score;
     hudLives.textContent = lives;
+    hudTime.textContent = Math.max(0, Math.ceil(timeLeft));
+    hudTime.classList.toggle('low', phase === 'playing' && timeLeft <= 10);
   }
 
   /* ---------------- Estrelas de fundo ---------------- */
@@ -104,6 +120,12 @@
   function reset() {
     score = 0;
     lives = 3;
+    timeLeft = GAME_TIME;
+    countdown = COUNTDOWN;
+    phase = 'countdown';
+    fireQueued = false;
+    keys.left = false;
+    keys.right = false;
     bullets = [];
     enemies = [];
     particles = [];
@@ -168,6 +190,26 @@
       }
     }
 
+    // contagem regressiva: 3-2-1 antes de liberar o timer
+    if (phase === 'countdown') {
+      countdown -= dt;
+      if (countdown <= 0) {
+        countdown = 0;
+        phase = 'playing';
+      }
+      updateHud();
+      return;
+    }
+
+    // tempo de partida
+    timeLeft -= dt;
+    if (timeLeft <= 0) {
+      timeLeft = 0;
+      updateHud();
+      endGame('time');
+      return;
+    }
+
     // player
     var move = 0;
     if (keys.left) move -= 1;
@@ -178,8 +220,8 @@
     if (player.invuln > 0) player.invuln -= dt;
     if (player.cooldown > 0) player.cooldown -= dt;
 
-    // tiro
-    if (keys.fire && player.cooldown <= 0) {
+    // tiro: um disparo por pressionamento (sem auto-repeat)
+    if (fireQueued && player.cooldown <= 0) {
       bullets.push({
         x: player.x + SHIP_W / 2 - 2,
         y: player.y + 6,
@@ -188,6 +230,7 @@
         vy: -520,
       });
       player.cooldown = 0.16;
+      fireQueued = false;
     }
 
     // balas
@@ -250,7 +293,7 @@
         updateHud();
 
         if (lives <= 0) {
-          endGame();
+          endGame('lives');
           return;
         }
       }
@@ -269,6 +312,8 @@
 
     // tremor
     if (shake > 0) shake -= dt;
+
+    updateHud();
   }
 
   /* ---------------- Draw ---------------- */
@@ -379,6 +424,35 @@
     }
   }
 
+  /* ---------------- Contagem regressiva ---------------- */
+
+  function drawCountdown() {
+    ctx.save();
+    ctx.fillStyle = 'rgba(4, 6, 14, 0.66)';
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    ctx.fillStyle = '#e9edf8';
+    ctx.shadowColor = '#00f2ff';
+    ctx.shadowBlur = 24;
+    ctx.font = 'bold 24px "Courier New", monospace';
+    ctx.fillText('PREPARE-SE', W / 2, H / 2 - 100);
+
+    ctx.font = 'bold 120px "Courier New", monospace';
+    ctx.fillStyle = '#00f2ff';
+    ctx.shadowBlur = 40;
+    ctx.fillText(String(Math.max(1, Math.ceil(countdown))), W / 2, H / 2 + 10);
+
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = 'rgba(127, 138, 176, 0.95)';
+    ctx.font = 'bold 14px "Courier New", monospace';
+    ctx.fillText('Faça o máximo de pontos!', W / 2, H / 2 + 105);
+
+    ctx.restore();
+  }
+
   /* ---------------- Loop ---------------- */
 
   function loop(now) {
@@ -391,6 +465,7 @@
     update(dt);
     if (!running) return; // pode ter terminado no update
     draw();
+    if (phase === 'countdown') drawCountdown();
 
     rafId = requestAnimationFrame(loop);
   }
@@ -407,13 +482,17 @@
     rafId = requestAnimationFrame(loop);
   }
 
-  function endGame() {
+  function endGame(reason) {
     running = false;
     if (rafId) cancelAnimationFrame(rafId);
     rafId = null;
 
     window.dispatchEvent(new CustomEvent('gameover', {
-      detail: { score: score },
+      detail: {
+        score: score,
+        reason: reason || 'lives',
+        timeLeft: Math.max(0, Math.ceil(timeLeft)),
+      },
     }));
   }
 

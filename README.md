@@ -42,21 +42,28 @@ Jogue agora no navegador: **https://ohcarlos.github.io/feira-tech-ugb/**
 | :---: | :---: |
 | ![Menu](screenshots/01-menu.png) | ![Construtor](screenshots/02-construtor.png) |
 
-| Laboratório de animação | Fliperama |
+| Laboratório de animação | Briefing antes da partida |
 | :---: | :---: |
-| ![Animação](screenshots/03-animacao.png) | ![Jogo](screenshots/04-jogo.png) |
+| ![Animação](screenshots/03-animacao.png) | ![Briefing](screenshots/07-briefing.png) |
 
-| Game over | Hall da Fama |
+| Fliperama (60 segundos) | Game over |
 | :---: | :---: |
-| ![Game Over](screenshots/05-game-over.png) | ![Hall da Fama](screenshots/06-hall-da-fama.png) |
+| ![Jogo](screenshots/04-jogo.png) | ![Game Over](screenshots/05-game-over.png) |
+
+| Hall da Fama | |
+| :---: | :---: |
+| ![Hall da Fama](screenshots/06-hall-da-fama.png) | |
 
 ---
 
 ## ✨ Funcionalidades
 
-- 🎨 **Construtor 16×16** com sliders RGB, paleta rápida, borracha e pintura por arrasto.
+- 🎨 **Construtor 16×16** com sliders RGB, paleta rápida, pincel, borracha, balde de preenchimento, simetria horizontal e pintura por arrasto.
+- 🖱️ **Botão direito apaga** o pixel direto no canvas, sem precisar trocar para a borracha.
 - 🔬 **Laboratório de animação** com controle de FPS de 1 a 60 e contador de frames desenhados.
 - 🕹️ **Fliperama completo** com nave personalizada, tiros, inimigos, vidas e pontuação.
+- ⏱️ **Desafio de 60 segundos** com tela de comandos, contagem regressiva 3-2-1 e fim de partida por tempo ou por vidas.
+- 🔫 **Um tiro por pressionamento** do ESPAÇO, sem auto-repeat ao segurar a tecla.
 - 💥 **Efeitos visuais**: partículas de explosão, tremor de tela, brilho neon, estrelas de fundo e flash de dano.
 - 🏆 **Scoreboard local** com Top 10 salvo no `localStorage` (funciona offline).
 - 📱 **Layout responsivo** para notebook, monitor grande e telas menores.
@@ -74,7 +81,10 @@ Jogue agora no navegador: **https://ohcarlos.github.io/feira-tech-ugb/**
 | **Animação** | A cena é redesenhada a cada frame; o FPS controla a taxa |
 | **Frame** | Um desenho completo da imagem em um instante |
 | **Colisão AABB** | Retângulos de tiros, inimigos e nave são comparados |
+| **Preenchimento (flood fill)** | O balde percorre células vizinhas de mesma cor |
+| **Simetria** | Cada pixel pintado é espelhado no eixo vertical |
 | **Delta time** | O jogo usa o tempo entre frames para manter a velocidade constante |
+| **Tempo de partida** | O loop controla os 60 segundos e a contagem 3-2-1 |
 
 ---
 
@@ -85,11 +95,20 @@ Jogue agora no navegador: **https://ohcarlos.github.io/feira-tech-ugb/**
 | --- | --- |
 | Mover para a esquerda | `←` ou `A` |
 | Mover para a direita | `→` ou `D` |
-| Atirar | `ESPAÇO` |
+| Atirar | `ESPAÇO` (um tiro por pressionamento) |
 
-### Menus e construtor
-- **Mouse**: clicar nos botões e pintar os pixels.
-- **Toque**: funciona em tablets e celulares.
+### Construtor
+| Ação | Como fazer |
+| --- | --- |
+| Pintar | Clique esquerdo com o pincel |
+| Apagar | Clique direito (ou ferramenta borracha) |
+| Preencher área | Ferramenta balde + clique esquerdo |
+| Ativar simetria | Botão `SIMETRIA` (espelha à esquerda/direita) |
+| Limpar tudo | Botão `LIMPAR` |
+
+### Menus e navegação
+- **Mouse**: clicar nos botões e nos menus.
+- **Toque**: funciona em tablets e celulares (a borracha continua disponível como ferramenta).
 
 ---
 
@@ -132,7 +151,7 @@ Para publicar um fork, ative o GitHub Pages em **Settings → Pages**, selecione
 
 ```
 feira-tech-ugb/
-├── index.html            # Estrutura das 6 telas
+├── index.html            # Estrutura das 7 telas
 ├── style.css             # Visual arcade, neon, CRT e responsividade
 ├── scoreboard.js         # Top 10 no localStorage
 ├── canvas-painter.js     # Construtor de nave 16×16 com RGB
@@ -152,8 +171,7 @@ Cada módulo JavaScript é uma **IIFE** que expõe apenas sua API pública em `w
 
 - Novos tipos de inimigos e padrões de ataque
 - Power-ups (tiro triplo, escudo, vida extra)
-- Modo cooperativo ou desafio por tempo
-- Editor de naves com preenchimento e simetria automática
+- Modo cooperativo para dois jogadores
 - Exportar a nave criada como imagem PNG
 - Ranking compartilhado entre máquinas (backend opcional)
 

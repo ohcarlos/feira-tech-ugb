@@ -22,13 +22,28 @@
     window.Scoreboard.render($('scoreboard-list'));
   }
 
-  function playWithCurrentShip() {
+  var pendingShip = null;
+  var briefingOrigin = 'screen-builder';
+
+  function openBriefing(origin) {
     if (!window.ShipBuilder.hasPixels()) {
       alert('Pinte pelo menos um pixel na nave antes de jogar!');
       return false;
     }
-    window.Game.start(window.ShipBuilder.getShipData());
+    pendingShip = window.ShipBuilder.getShipData();
+    briefingOrigin = origin || 'screen-builder';
+    show('screen-briefing');
     return true;
+  }
+
+  function startGame() {
+    if (!pendingShip) return;
+    // evita que o ESPAÇO reative o botão que ainda está em foco
+    if (document.activeElement && document.activeElement.blur) {
+      document.activeElement.blur();
+    }
+    show('screen-game');
+    window.Game.start(pendingShip);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -58,7 +73,7 @@
     });
 
     $('btn-builder-play').addEventListener('click', function () {
-      if (playWithCurrentShip()) show('screen-game');
+      openBriefing('screen-builder');
     });
 
     /* ---------- LABORATÓRIO ---------- */
@@ -70,13 +85,30 @@
 
     $('btn-lab-play').addEventListener('click', function () {
       window.AnimLab.stop();
-      if (playWithCurrentShip()) show('screen-game');
+      openBriefing('screen-lab');
+    });
+
+    /* ---------- BRIEFING ---------- */
+
+    $('btn-briefing-start').addEventListener('click', startGame);
+
+    $('btn-briefing-back').addEventListener('click', function () {
+      if (briefingOrigin === 'screen-lab' && pendingShip) {
+        window.AnimLab.setShip(pendingShip);
+        window.AnimLab.start();
+      }
+      show(briefingOrigin);
     });
 
     /* ---------- GAME OVER ---------- */
 
     window.addEventListener('gameover', function (e) {
-      $('final-score').textContent = e.detail.score;
+      var detail = e.detail || {};
+      $('final-score').textContent = detail.score || 0;
+
+      var title = $('gameover-title');
+      title.textContent = detail.reason === 'time' ? 'TEMPO ESGOTADO' : 'GAME OVER';
+
       refreshRankings();
       show('screen-gameover');
     });
@@ -91,7 +123,7 @@
     });
 
     $('btn-retry').addEventListener('click', function () {
-      if (playWithCurrentShip()) show('screen-game');
+      openBriefing('screen-gameover');
     });
 
     $('btn-gameover-menu').addEventListener('click', function () {
