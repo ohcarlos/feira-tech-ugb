@@ -66,7 +66,7 @@ Jogue agora no navegador: **https://ohcarlos.github.io/feira-tech-ugb/**
 - 🔫 **Um tiro por pressionamento** do ESPAÇO, sem auto-repeat ao segurar a tecla.
 - 💥 **Efeitos visuais**: partículas de explosão, tremor de tela, brilho neon, estrelas de fundo e flash de dano.
 - 🏆 **Scoreboard local** com Top 10 salvo no `localStorage` (funciona offline).
-- 📱 **Layout responsivo** para notebook, monitor grande e telas menores.
+- 🖥️ **Layout otimizado** para o monitor do estande.
 - ⌨️ **Teclado no jogo** e mouse nos menus e na pintura.
 
 ---
@@ -108,7 +108,7 @@ Jogue agora no navegador: **https://ohcarlos.github.io/feira-tech-ugb/**
 
 ### Menus e navegação
 - **Mouse**: clicar nos botões e nos menus.
-- **Toque**: funciona em tablets e celulares (a borracha continua disponível como ferramenta).
+- **Teclado**: mover e atirar durante a partida.
 
 ---
 
@@ -152,7 +152,7 @@ Para publicar um fork, ative o GitHub Pages em **Settings → Pages**, selecione
 ```
 feira-tech-ugb/
 ├── index.html            # Estrutura das 7 telas
-├── style.css             # Visual arcade, neon, CRT e responsividade
+├── style.css             # Visual arcade, neon e CRT
 ├── scoreboard.js         # Top 10 no localStorage
 ├── canvas-painter.js     # Construtor de nave 16×16 com RGB
 ├── animation-lab.js      # Demonstração de frames e FPS

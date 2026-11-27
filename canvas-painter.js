@@ -187,7 +187,7 @@
     });
   }
 
-  // ---- Eventos de pintura (mouse + toque via pointer events) ----
+  // ---- Eventos de pintura (mouse via pointer events) ----
   canvas.addEventListener('pointerdown', function (evt) {
     evt.preventDefault();
 
